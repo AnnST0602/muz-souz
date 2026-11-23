@@ -79,8 +79,9 @@ body.loaded .loader{transform:translateY(-100%);visibility:hidden;transition:tra
 .burger{display:none;background:none;border:0;color:var(--text);width:44px;height:44px;cursor:pointer;position:relative;z-index:2}
 .menu-cta{display:none}
 @media (max-width:980px){
-  .nav-links{position:fixed;inset:0;background:var(--bg);flex-direction:column;justify-content:center;align-items:center;gap:30px;font-size:18px;opacity:0;pointer-events:none;transition:.35s}
-  .nav-links.open{opacity:1;pointer-events:auto}
+  .nav-links{position:fixed;inset:0;background:var(--bg);flex-direction:column;justify-content:safe center;align-items:center;gap:30px;font-size:18px;overflow-y:auto;overscroll-behavior:contain;visibility:hidden;opacity:0;pointer-events:none;transition:opacity .35s,visibility 0s .35s}
+  .nav-links.open{visibility:visible;opacity:1;pointer-events:auto;transition-delay:0s}
+  .nav-links > *{flex-shrink:0}
   /* backdrop-filter on the bar would trap the fixed menu inside the 66px bar, so drop it while the menu is open */
   .nav.menu-open{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:transparent!important;border-color:transparent!important}
   .nav-links{height:100vh;height:100dvh;gap:22px;font-size:22px;letter-spacing:.16em;color:var(--text);padding:90px 24px calc(30px + env(safe-area-inset-bottom))}
@@ -184,7 +185,20 @@ body.loaded .hero h1{animation:lift 1.3s .6s cubic-bezier(.2,.7,.2,1) forwards}
 .vc-dots button{width:8px;height:8px;border:1px solid var(--muted);background:none;padding:0;cursor:pointer;transition:.3s}
 .vc-dots button.on{background:var(--accent);border-color:var(--accent);width:28px}
 .vnote{color:var(--dim);font-size:14px}
-@media (max-width:760px){.vcar{aspect-ratio:1.65}.vc-slide{width:86%}.vc-slide.l{transform:translateX(-150%) scale(.8)}.vc-slide.r{transform:translateX(50%) scale(.8)}.vc-arrow{width:42px;height:42px;top:auto;bottom:4px;transform:none}}
+@media (max-width:760px){
+  .vcar{aspect-ratio:auto;display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+  .vc-track{position:relative;grid-area:1/1}
+  .vc-track::before{content:"";display:block;width:86%;aspect-ratio:16/9}
+  .vc-slide{width:86%}
+  .vc-slide .play{width:52px;height:52px}
+  .vc-slide .vc-name{left:12px;right:12px;bottom:10px}
+  .vc-slide .vc-name small{font-size:14px}
+  .vc-slide.l{transform:translateX(-150%) scale(.8)}
+  .vc-slide.r{transform:translateX(50%) scale(.8)}
+  .vc-arrow{position:relative;grid-area:2/1;inset:auto;width:44px;height:44px;transform:none;margin-inline:16px}
+  .vc-arrow.prev{left:auto;justify-self:start}
+  .vc-arrow.next{right:auto;justify-self:end}
+}
 
 /* programs */
 /* light & warm sections break up the dark page */
@@ -354,18 +368,17 @@ h2.in .w>span{transform:none}
 .pcard.cta .btn{--accent2:#efe4d3;--bg:#2a1c14;align-self:flex-start}
 .hs-bar{height:2px;background:var(--line);position:relative;margin-top:10px}
 .hs-bar i{position:absolute;inset:0;background:var(--accent);transform-origin:left;transform:scaleX(var(--p,0))}
-@media (min-width:901px){
+@media (width > 900px) and (height > 680px) and (prefers-reduced-motion:no-preference){
   .hs{height:var(--hs-h,auto)}
   .hs-sticky{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;justify-content:center;overflow:hidden;padding-top:66px}
 }
-@media (min-width:901px) and (max-height:820px){
+@media (width > 900px) and (680px < height <= 820px) and (prefers-reduced-motion:no-preference){
   .pcard{min-height:290px;padding:24px 26px}.pcard .n{font-size:60px}.pcard h3{margin-top:16px;font-size:23px}
   .hs-head h2{font-size:clamp(30px,4vw,48px)}.hs-head .lead{font-size:15px;margin-bottom:10px}.hs-track{margin-top:8px}
   .hs-track{will-change:transform;padding-left:max(24px,calc(50vw - 566px))}
   .programs{padding:0}
 }
-@media (max-width:900px){
-  /* phones: a compact vertical list instead of the sideways strip */
+@media (max-width:900px), (max-height:680px), (prefers-reduced-motion:reduce){
   .hs-track{flex-direction:column;gap:10px;margin-top:28px;padding:0 16px}
   .pcard{width:auto;min-height:0;display:grid;grid-template-columns:52px 1fr;column-gap:14px;padding:20px 18px;transform:none!important}
   .pcard .n{font-size:44px;line-height:1;margin:0;grid-row:span 2}
@@ -401,6 +414,7 @@ h2.in .w>span{transform:none}
 .clients li{aspect-ratio:1;background:#fffdf9;border-radius:14px;display:grid;place-items:center;box-shadow:0 1px 0 rgba(60,36,22,.06),0 10px 30px -18px rgba(60,36,22,.35);opacity:0;transform:translateY(24px) scale(.96);transition:opacity .7s calc(var(--i)*80ms),transform .9s cubic-bezier(.2,.7,.2,1) calc(var(--i)*80ms),box-shadow .4s}
 .clients.in li{opacity:1;transform:none}
 .clients img{max-width:58%;max-height:52%;object-fit:contain;filter:grayscale(1) sepia(.35) opacity(.75);transition:filter .8s calc(var(--i)*120ms + .4s),transform .5s}
+.clients img[alt="Газпром"]{max-width:82%;max-height:72%}
 .clients.in img{filter:none}
 .clients li:hover{box-shadow:0 1px 0 rgba(60,36,22,.06),0 18px 40px -16px rgba(60,36,22,.45)}
 .clients li:hover img{transform:scale(1.08)}
@@ -867,7 +881,7 @@ const hw = [document.querySelector(".hero h1 .l1"), document.querySelector(".her
 // gallery parallax, vinyl spin, horizontal programmes
 const pxEls = [...document.querySelectorAll(".px")], disc = document.getElementById("disc");
 const hs = document.getElementById("hs"), hsTrack = document.getElementById("hsTrack"), hsBar = document.getElementById("hsBar");
-const wide = matchMedia("(min-width: 901px)");
+const wide = matchMedia("(width > 900px) and (height > 680px)");
 let hsDist = 0;
 const sizeHs = () => { if (!wide.matches || calm) { hs.style.removeProperty("--hs-h"); hsTrack.style.transform = ""; hsTrack.style.paddingLeft = ""; hsDist = 0; return; }
   const t = hsTrack.style.transform; hsTrack.style.transform = ""; const last = hsTrack.lastElementChild;
