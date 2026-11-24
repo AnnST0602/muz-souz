@@ -226,16 +226,32 @@ section{position:relative;padding:120px 0}
 @media (max-width:900px){.awards{grid-template-columns:1fr}}
 
 /* gallery */
-.gallery{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:170px;gap:10px;margin-top:50px}
-.gallery figure{margin:0;overflow:hidden}
-.gallery img{width:100%;height:100%;object-fit:cover;transition:transform 1s,filter .6s}
-.gallery figure:hover img{transform:scale(1.05);filter:none}
-.g1{grid-column:span 3;grid-row:span 2}.g2{grid-column:span 3}.g3,.g4{grid-column:span 3/span 3}.g3{grid-column:span 2}.g4{grid-column:span 1}.g5{grid-column:span 2}.g6{grid-column:span 2}.g7{grid-column:span 2}
+.gallery{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:minmax(0,1fr) minmax(0,1fr) minmax(0,.76fr);grid-template-areas:"main main sax vocal" "main main singer percussion" "trumpet trumpet band band";aspect-ratio:1200/690;gap:clamp(6px,1vw,12px);margin-top:50px}
+.gallery figure{margin:0;min-width:0;min-height:0;overflow:hidden}
+.gallery picture,.gallery img{display:block;width:100%;height:100%}
+.gallery img{object-fit:cover}
+.gallery .g1{grid-area:main}
+.gallery .g2{grid-area:sax}
+.gallery .g3{grid-area:vocal}
+.gallery .g4{grid-area:singer}
+.gallery .g5{grid-area:percussion}
+.gallery .g6{grid-area:trumpet}
+.gallery .g7{grid-area:band}
+.gallery .g1 img{object-position:50% 65%}
+.gallery .g3 img{object-position:50% 90%}
+.gallery .g4 img{object-position:55% 55%}
+.gallery .g5 img{object-position:75% 25%}
+@media (max-width:700px){
+  .gallery{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:none;grid-template-areas:"main main" "sax vocal" "singer percussion" "trumpet trumpet" "band band";aspect-ratio:auto}
+  .gallery figure{aspect-ratio:6/5}
+  .gallery .g6,.gallery .g7{aspect-ratio:2.4}
+}
+.hero-intro{position:absolute;z-index:2;top:76px;left:50%;width:min(156px,38vw);transform:translateX(-50%);mix-blend-mode:screen;opacity:0;pointer-events:none}
+.hero-intro.playing{opacity:1}
 .socials{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px;justify-content:center}
 .soc{display:inline-flex;align-items:center;gap:10px;padding:13px 20px;border:1px solid var(--line);font:400 12px/1 var(--display);letter-spacing:.18em;text-transform:uppercase;transition:.3s}
 .soc:hover{border-color:var(--accent);color:var(--accent)}
 .soc svg{width:18px;height:18px;fill:currentColor}
-@media (max-width:700px){.gallery{grid-template-columns:repeat(2,1fr);grid-auto-rows:140px}.gallery figure{grid-column:span 1!important;grid-row:span 1!important}.gallery .g1{grid-column:span 2!important;grid-row:span 2!important}}
 
 /* contacts */
 .contact{padding:140px 0;overflow:hidden;isolation:isolate}
@@ -332,7 +348,6 @@ h2.in .w>span{transform:none}
 .dev.in img{filter:sepia(.1) saturate(1.05) contrast(1.03)}
 /* parallax inside frames */
 .px img{transform:translateY(var(--py,0px)) scale(1.18)!important}
-.gallery figure.px:hover img{transform:translateY(var(--py,0px)) scale(1.24)!important}
 
 /* spotlight that follows the cursor */
 .spotlight::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;opacity:0;transition:opacity .6s;mix-blend-mode:screen;
@@ -468,18 +483,6 @@ h2.in .w>span{transform:none}
 .group-photo.about-wide picture{display:block;width:100%;height:100%}
 .group-photo.about-wide img{width:100%;height:100%;object-fit:cover;object-position:center;transform:none!important}
 @media(max-width:700px){.group-photo.about-wide{aspect-ratio:4/3;max-width:100%}}
-#gallery .gallery{grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:225px;gap:12px}
-#gallery .gallery figure{min-width:0;position:relative;overflow:hidden}
-#gallery .gallery picture{display:block;width:100%;height:100%}
-#gallery .gallery img{width:100%;height:100%;object-fit:cover}
-#gallery .gallery .g1{grid-column:span 2;grid-row:span 2}
-#gallery .gallery .g2,#gallery .gallery .g3,#gallery .gallery .g4,#gallery .gallery .g5{grid-column:span 1;grid-row:span 1}
-#gallery .gallery .g6,#gallery .gallery .g7{grid-column:span 2;grid-row:span 1}
-@media(max-width:700px){
- #gallery .gallery{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:160px;gap:9px}
- #gallery .gallery figure{grid-column:span 1!important;grid-row:span 1!important}
- #gallery .gallery .g1{grid-column:span 2!important;grid-row:span 2!important}
-}
 
 /* Признание: награды сверху, компании сразу под отдельным заголовком */
 #awards .awards{margin-top:30px}
@@ -496,11 +499,6 @@ h2.in .w>span{transform:none}
 /* Portrait has a margin above hairlines; no hover/pseudo parallax clipping. */
 #about .group-photo.about-wide {aspect-ratio:21/10 !important;overflow:hidden;}
 #about .group-photo.about-wide img {width:100%;height:100%;object-fit:cover;object-position:center center!important;transform:none!important;}
-#gallery .gallery .g2 img,#gallery .gallery .g4 img,
-#gallery .gallery .g2:hover img,#gallery .gallery .g4:hover img {
- transform:none!important;object-position:center!important;
-}
-#gallery .gallery .g2 picture,#gallery .gallery .g4 picture{display:block;height:100%;width:100%;}
 #awards .clients-title{text-align:center;}
 @media (max-width:700px){
  #about .group-photo.about-wide {aspect-ratio:4/3.16!important;}
@@ -725,13 +723,13 @@ h2.in .w>span{transform:none}
 <div class="kicker rv center">Фото</div>
 <h2 class="rv d1" style="text-align:center">На сцене <em>и не только</em></h2>
 <div class="gallery">
-<figure class="g1 rv dev px d1" data-speed=".08"><picture><source media="(max-width:700px)" srcset="img/stage_1_mobile.webp"/><img alt="Женский вокал на концерте" class="photo" loading="lazy" src="img/stage_1_desktop.webp"/></picture></figure>
-<figure class="g2 rv dev d2"><picture><source media="(max-width:700px)" srcset="img/stage_2_mobile.webp"/><img alt="Саксофонист МУЗ СОЮЗ" class="photo" loading="lazy" src="img/stage_2_desktop.webp"/></picture></figure>
-<figure class="g3 rv dev px" data-speed=".10"><picture><source media="(max-width:700px)" srcset="img/stage_3_mobile.webp"/><img alt="Мужской вокал на сцене" class="photo" loading="lazy" src="img/stage_3_desktop.webp"/></picture></figure>
-<figure class="g4 rv dev d1"><picture><source media="(max-width:700px)" srcset="img/stage_4_mobile.webp"/><img alt="Музыкант за клавишными" class="photo" loading="lazy" src="img/stage_4_desktop.webp"/></picture></figure>
-<figure class="g5 rv dev px d2" data-speed=".06"><picture><source media="(max-width:700px)" srcset="img/stage_5_mobile.webp"/><img alt="Вокалист и музыканты на сцене" class="photo" loading="lazy" src="img/stage_5_desktop.webp"/></picture></figure>
-<figure class="g6 rv dev px" data-speed=".12"><picture><source media="(max-width:700px)" srcset="img/stage_6_mobile.webp"/><img alt="Трубач МУЗ СОЮЗ" class="photo" loading="lazy" src="img/stage_6_desktop.webp"/></picture></figure>
-<figure class="g7 rv dev px d1" data-speed=".18"><picture><source media="(max-width:700px)" srcset="img/stage_7_mobile.webp"/><img alt="Группа МУЗ СОЮЗ на сцене" class="photo" loading="lazy" src="img/stage_7_desktop.webp"/></picture></figure>
+<figure class="g1 rv"><img alt="Вокалист и музыканты на сцене" loading="lazy" decoding="async" src="img/stage_IMG_1973.webp"/></figure>
+<figure class="g2 rv"><picture><source media="(max-width:700px)" srcset="img/stage_2_mobile.webp"/><img alt="Саксофонист МУЗ СОЮЗ" class="photo" loading="lazy" src="img/stage_2_desktop.webp"/></picture></figure>
+<figure class="g3 rv"><img alt="Вокалист в белом костюме" loading="lazy" decoding="async" src="img/stage_IMG_1996.webp"/></figure>
+<figure class="g4 rv"><img alt="Вокалистка МУЗ СОЮЗ" loading="lazy" decoding="async" src="img/stage_IMG_1969.webp"/></figure>
+<figure class="g5 rv"><img alt="Перкуссионист МУЗ СОЮЗ" loading="lazy" decoding="async" src="img/stage_IMG_1998.webp"/></figure>
+<figure class="g6 rv"><picture><source media="(max-width:700px)" srcset="img/stage_6_mobile.webp"/><img alt="Трубач МУЗ СОЮЗ" class="photo" loading="lazy" src="img/stage_6_desktop.webp"/></picture></figure>
+<figure class="g7 rv"><picture><source media="(max-width:700px)" srcset="img/stage_7_mobile.webp"/><img alt="Группа МУЗ СОЮЗ на сцене" class="photo" loading="lazy" src="img/stage_7_desktop.webp"/></picture></figure>
 </div>
 <div class="socials rv">
 <a class="soc" href="https://instagram.com/muzsouz" rel="noopener" target="_blank"><svg><use href="#i-ig"></use></svg>@muzsouz</a>
@@ -817,6 +815,26 @@ document.getElementById("y").textContent = new Date().getFullYear();
 
 // hero parallax
 const hbg = document.querySelector(".hero-bg");
+// Start the mobile logo after the hero image, without blocking the page.
+if (matchMedia("(max-width:700px) and (prefers-reduced-motion:no-preference)").matches) {
+  const heroPhoto = hbg.querySelector("img");
+  const playIntro = () => {
+    const intro = document.createElement("video");
+    intro.className = "hero-intro";
+    intro.setAttribute("aria-hidden", "true");
+    intro.muted = true;
+    intro.playsInline = true;
+    intro.addEventListener("playing", () => intro.classList.add("playing"), { once: true });
+    intro.addEventListener("ended", () => intro.remove(), { once: true });
+    intro.addEventListener("error", () => intro.remove(), { once: true });
+    intro.src = "img/intro.mp4";
+    hbg.parentElement.append(intro);
+    intro.play().catch(() => intro.remove());
+  };
+  const scheduleIntro = () => requestAnimationFrame(() => requestAnimationFrame(playIntro));
+  if (heroPhoto.complete && heroPhoto.naturalWidth) scheduleIntro();
+  else heroPhoto.addEventListener("load", scheduleIntro, { once: true });
+}
 
 // nav
 const nav = document.getElementById("nav"), fab = document.getElementById("fab");
@@ -860,7 +878,7 @@ document.querySelectorAll("h2.rv").forEach(h => { let i = 0;
 // hero title: "МУЗ" drifts left, "СОЮЗ" drifts right as you scroll away; they meet again on return
 const hw = [document.querySelector(".hero h1 .l1"), document.querySelector(".hero h1 span")];
 
-// gallery parallax, vinyl spin, horizontal programmes
+// photo parallax, vinyl spin, horizontal programmes
 const pxEls = [...document.querySelectorAll(".px")], disc = document.getElementById("disc");
 const hs = document.getElementById("hs"), hsTrack = document.getElementById("hsTrack"), hsBar = document.getElementById("hsBar");
 const wide = matchMedia("(width > 900px) and (height > 680px)");
