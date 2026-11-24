@@ -59,7 +59,7 @@ section{position:relative;padding:120px 0}
 
 /* loader */
 .loader{position:fixed;inset:0;z-index:250;background:var(--bg);display:grid;place-items:center;transition:transform 1s cubic-bezier(.7,0,.2,1) .2s}
-body.loaded .loader{transform:translateY(-100%);visibility:hidden;transition:transform 1s cubic-bezier(.7,0,.2,1) .2s,visibility 0s 1.3s}
+body.loaded .loader{transform:translateY(-100%);visibility:hidden;transition:transform .85s cubic-bezier(.7,0,.2,1),visibility 0s .85s}
 .loader{grid-template-rows:auto auto;align-content:center;justify-items:center}
 .loader .intro{width:min(720px,100vw);aspect-ratio:8/5;mix-blend-mode:screen;filter:sepia(.25) brightness(.95)}
 .loader i{width:min(220px,50vw)!important;transform:scaleX(0);transform-origin:left;animation:bar 4.4s linear forwards!important}
@@ -104,7 +104,7 @@ body.loaded .loader{transform:translateY(-100%);visibility:hidden;transition:tra
 @keyframes drift{to{transform:translate(4%,-3%) scale(1.08)}}
 .hero-top{font:400 13px/1.4 var(--display);letter-spacing:.35em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
 .hero h1{margin:0;font:500 clamp(80px,17vw,250px)/.86 var(--display);letter-spacing:.02em;text-transform:uppercase;clip-path:inset(0 0 100% 0)}
-body.loaded .hero h1{animation:lift 1.3s .6s cubic-bezier(.2,.7,.2,1) forwards}
+body.loaded .hero h1{animation:lift 1.3s .35s cubic-bezier(.2,.7,.2,1) forwards}
 @keyframes lift{from{clip-path:inset(0 0 100% 0);transform:translateY(60px)}to{clip-path:inset(-60% -60% -60% -60%);transform:none}}
 .hero h1 span{display:block;padding:.1em 0 .16em clamp(0px,9vw,140px);margin:-.1em 0 -.16em;background:linear-gradient(90deg,var(--text),var(--accent2) 60%,var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero-row{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;margin-top:34px;flex-wrap:wrap}
@@ -827,7 +827,7 @@ document.getElementById("y").textContent = new Date().getFullYear();
 // loader + hero parallax
 // intro: logo animation plays once, then the page opens (fallback if video can't play)
 const open = () => document.body.classList.add("loaded"), intro = document.querySelector(".intro");
-if (intro) { intro.addEventListener("ended", () => setTimeout(open, 250)); intro.addEventListener("error", open);
+if (intro) { intro.addEventListener("ended", open); intro.addEventListener("error", open);
   const p = intro.play(); if (p) p.catch(open); }
 setTimeout(open, intro ? 5600 : 1500);
 const hbg = document.querySelector(".hero-bg");
