@@ -246,8 +246,8 @@ section{position:relative;padding:120px 0}
   .gallery figure{aspect-ratio:6/5}
   .gallery .g6,.gallery .g7{aspect-ratio:2.4}
 }
-.hero-intro{position:absolute;z-index:2;top:76px;left:50%;width:min(156px,38vw);transform:translateX(-50%);mix-blend-mode:screen;opacity:0;pointer-events:none}
-.hero-intro.playing{opacity:1}
+.hero-intro{position:fixed;inset:0;z-index:250;width:100%;height:100%;background:#120c0a;object-fit:contain;opacity:0;pointer-events:none;transition:opacity .15s}
+.hero-intro.playing{opacity:1;pointer-events:auto;cursor:pointer}
 .socials{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px;justify-content:center}
 .soc{display:inline-flex;align-items:center;gap:10px;padding:13px 20px;border:1px solid var(--line);font:400 12px/1 var(--display);letter-spacing:.18em;text-transform:uppercase;transition:.3s}
 .soc:hover{border-color:var(--accent);color:var(--accent)}
@@ -815,25 +815,23 @@ document.getElementById("y").textContent = new Date().getFullYear();
 
 // hero parallax
 const hbg = document.querySelector(".hero-bg");
-// Start the mobile logo after the hero image, without blocking the page.
-if (matchMedia("(max-width:700px) and (prefers-reduced-motion:no-preference)").matches) {
-  const heroPhoto = hbg.querySelector("img");
-  const playIntro = () => {
-    const intro = document.createElement("video");
-    intro.className = "hero-intro";
-    intro.setAttribute("aria-hidden", "true");
-    intro.muted = true;
-    intro.playsInline = true;
-    intro.addEventListener("playing", () => intro.classList.add("playing"), { once: true });
-    intro.addEventListener("ended", () => intro.remove(), { once: true });
-    intro.addEventListener("error", () => intro.remove(), { once: true });
-    intro.src = "img/intro.mp4";
-    hbg.parentElement.append(intro);
-    intro.play().catch(() => intro.remove());
-  };
-  const scheduleIntro = () => requestAnimationFrame(() => requestAnimationFrame(playIntro));
-  if (heroPhoto.complete && heroPhoto.naturalWidth) scheduleIntro();
-  else heroPhoto.addEventListener("load", scheduleIntro, { once: true });
+// Show the opening film as soon as playback is ready.
+if (!location.hash && !matchMedia("(prefers-reduced-motion:reduce)").matches) {
+  const intro = document.createElement("video");
+  intro.className = "hero-intro";
+  intro.muted = true;
+  intro.playsInline = true;
+  intro.playbackRate = 1.8;
+  intro.setAttribute("aria-hidden", "true");
+  const dismiss = () => intro.remove();
+  setTimeout(dismiss, 3000);
+  intro.addEventListener("playing", () => intro.classList.add("playing"), { once: true });
+  intro.addEventListener("ended", dismiss, { once: true });
+  intro.addEventListener("error", dismiss, { once: true });
+  intro.addEventListener("click", dismiss, { once: true });
+  intro.src = "img/intro.mp4";
+  document.body.append(intro);
+  intro.play().catch(dismiss);
 }
 
 // nav
